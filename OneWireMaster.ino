@@ -49,6 +49,8 @@ void setup(void) {
 
 
   Serial.println();
+  
+  // Writing the dummy data 1 & 2 at index 6 of scratchpad
 
   ds.write(WRITE_SCRATCHPAD, 1);
   ds.write(ADDR1);
@@ -72,6 +74,9 @@ void setup(void) {
 
   /*
     ds.skip();
+    
+    // Reading the scratchpad
+    
     ds.write(READ_SCRATCHPAD,1);
 
     for (int i = 0; i < 10; i++) {
@@ -87,6 +92,9 @@ void setup(void) {
   */
 
   ds.skip();
+  
+  // Copying the scratchpad to memory
+  
   ds.write(COPY_SCRATCHPAD, 1);
   ds.write(ADDR1);
   ds.write(ADDR2);
@@ -97,22 +105,27 @@ void setup(void) {
   ds.reset();
 
   ds.skip();
+  
+  // Reading Memory
+  
   ds.write(READ_MEMORY, 1);
 
-  ds.write(0x00);
-  ds.write(0x00);
-
-  delay(1000);
+  ds.write(0x00);  // Transmitting a dummy TA1
+  ds.write(0x00);  // Transmitting a dummy TA2
+  
+  // reading the required data
   for (int i = 0; i < 32; i++) {
     data[i] = ds.read();
   }
+  
+  delay(1000);
 
+  // printing the read data to serial monitor
   for (int i = 0; i < 32; i++) {
     Serial.print("data" + String(i) + ": ");
     Serial.println(data[i], HEX);
   }
 
-  delay(1000);
   ds.depower();
   ds.reset();
 
